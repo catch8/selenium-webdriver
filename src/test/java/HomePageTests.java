@@ -172,4 +172,32 @@ public class HomePageTests {
             Assertions.assertEquals(expectedLinks.get(chapter), actualLinks, "Не совпадают в " + chapter);
         }
     }
+
+    @Test
+    void openAllLinksTest() throws InterruptedException {
+        int qtyLinks = 0;
+        List<WebElement> chapters = driver.findElements(By.cssSelector("h5.card-title")) ;
+        for (WebElement chapter : chapters){
+            System.out.println(chapter.getText());
+
+            List<WebElement> links = chapter.findElements(By.xpath("./../a"));
+            qtyLinks += links.size();
+            for ( WebElement link : links){
+                System.out.println(link.getText());
+                link.click();
+                //Thread.sleep(1000);
+                driver.navigate().back();//возвращаемся назад
+            }
+        }
+        Assertions.assertEquals(6,chapters.stream().count()); //или .size()
+        Assertions.assertEquals(27, qtyLinks);
+    }
+
+    @Test
+    void classesTest(){
+        List<WebElement> links = driver.findElements(By.cssSelector(".btn.btn-outline-primary.mb-2"));
+        Assertions.assertEquals(27, links.size());
+    }
 }
+
+

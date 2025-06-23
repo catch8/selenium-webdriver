@@ -56,6 +56,9 @@ public class WebFormTests {
     void disabledInput() {
         WebElement inputField = driver.findElement(By.cssSelector(".form-control[name = 'my-disabled']"));
         assertFalse(inputField.isEnabled(), "The field should be disabled");
+
+        //попытка ввести в disabled поле
+        assertThrows(ElementNotInteractableException.class, () -> {inputField.sendKeys("Hello");});
     }
 
     @Test
@@ -70,9 +73,13 @@ public class WebFormTests {
         WebElement checkbox1 = driver.findElement(By.cssSelector(".form-check-input#my-check-1"));
         // assertEquals(true, checkbox1.isSelected());
         assertTrue(checkbox1.isSelected(), "Чекбокс выбран");
+        checkbox1.click();
+        assertFalse(checkbox1.isSelected(), "Чекбокс не выбран");
 
         WebElement checkbox2 = driver.findElement(By.cssSelector(".form-check-input#my-check-2"));
         assertFalse(checkbox2.isSelected(), "Чекбокс не выбран");
+        checkbox2.click();
+        assertTrue(checkbox2.isSelected(), "Чекбокс выбран");
     }
 
     @Test
